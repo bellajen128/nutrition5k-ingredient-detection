@@ -1,0 +1,7 @@
+{
+  "sample_f1": 0.7572749858646524,
+  "sample_precision": 0.839223601158364,
+  "sample_recall": 0.7234398333078184,
+  "exact_match": 0.33810888252148996,
+  "hamming_accuracy": 0.9900116224209158
+}

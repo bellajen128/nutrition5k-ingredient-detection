@@ -1,0 +1,38 @@
+{
+  "metadata": {
+    "training_date": "2025-11-06",
+    "training_time_minutes": 8.37,
+    "epochs_completed": 20,
+    "target_epochs": 20,
+    "early_stopped": false
+  },
+  "config": {
+    "batch_size": 32,
+    "num_epochs": 20,
+    "learning_rate": 0.001,
+    "weight_decay": 1e-05,
+    "num_workers": 8,
+    "img_size": 512,
+    "num_classes": 249,
+    "label_threshold": 0.5,
+    "device": "cuda"
+  },
+  "best_validation": {
+    "epoch": 18,
+    "val_loss": 0.031715758398852566,
+    "f1_score": 0.7769919731063125
+  },
+  "final_validation": {
+    "loss": 0.03186630144376646,
+    "precision": 0.8253905606354676,
+    "recall": 0.7562049196365537,
+    "f1": 0.7736455664478288
+  },
+  "test_set": {
+    "precision": 0.839223601158364,
+    "recall": 0.7234398333078184,
+    "f1": 0.7572749858646524,
+    "exact_match": 0.33810888252148996,
+    "hamming_accuracy": 0.9900116224209158
+  }
+}
