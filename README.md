@@ -220,9 +220,9 @@ Output: 249 probabilities [0, 1]
 
 | Metric | Validation | Test | Target | Status |
 |--------|-----------|------|--------|--------|
-| **F1-Score** | 77.70% | **75.73%** | >70% | ✅ |
-| **Precision** | 82.54% | **83.92%** | >70% | ✅ |
-| **Recall** | 75.62% | **72.34%** | >60% | ✅ |
+| **F1-Score** | 77.70% | **75.73%** | >70% | Done |
+| **Precision** | 82.54% | **83.92%** | >70% | Done |
+| **Recall** | 75.62% | **72.34%** | >60% | Done |
 
 ### Training Efficiency
 
@@ -410,12 +410,6 @@ Hardware:
 
 **Chen Jen** - jen.che@northeastern.edu  
 **Qingyi Ji** - ji.qin@northeastern.edu
-
----
-
-## License
-
-This project is for academic purposes (Northeastern University Deep Learning Course).
 
 ---
 
