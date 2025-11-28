@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+.Python
+
+# Large model files (upload separately)
+*.pth
+
+# Environment
+venv/
+env/
+*.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Logs
+*.log
+*.out
+*.err
+
+# Streamlit
+.streamlit/
