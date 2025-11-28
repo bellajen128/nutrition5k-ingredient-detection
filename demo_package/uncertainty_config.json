@@ -1,0 +1,9 @@
+{
+  "optimal_threshold": 0.2,
+  "mc_dropout_samples": 20,
+  "model_path": "/scratch/jen.che/nutrition5k_prepared/efficientdet_outputs/models/efficientnet_best.pth",
+  "avg_predictions": 8.55,
+  "avg_precision": 0.7812490573152339,
+  "avg_recall": 0.8786244800950685,
+  "mean_uncertainty": 0.13621401160489768
+}
