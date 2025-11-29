@@ -117,11 +117,11 @@ Output (249-dim multi-label)
 
 | Metric | Value |
 |--------|-------|
-| F1 Score | 0.786 |
-| Precision | 0.781 |
-| Recall | 0.824 |
-| Exact Match | 0.370 |
-| Hamming Accuracy | 0.985 |
+| F1 Score | 0.793 |
+| Precision | 0.778 |
+| Recall | 0.839 |
+| Exact Match | 0.364 |
+| Hamming Accuracy | 0.988 |
 
 ## Citation
 ```
