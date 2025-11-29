@@ -30,7 +30,7 @@ IE7615_Food_Recognition/
 
 ### 2. Threshold Optimization
 - Data-driven threshold selection
-- Optimal threshold: 0.25
+- Optimal threshold: 0.2
 - Improves F1 by 0.9%
 
 ### 3. MC Dropout Uncertainty Estimation
