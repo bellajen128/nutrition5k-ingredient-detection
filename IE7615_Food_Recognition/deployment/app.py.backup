@@ -369,16 +369,15 @@ with tab1:
             available_ingredients = [ing for ing in vocab if ing not in st.session_state.ingredient_weights]
             
             if available_ingredients:
-                new_ingredients = st.multiselect(
-                    "Select ingredients to add:",
-                    sorted(available_ingredients),
+                new_ingredient = st.selectbox(
+                    "Select ingredient to add:",
+                    [""] + sorted(available_ingredients),
                     key="add_select"
                 )
-
-                if st.button("Add Selected") and new_ingredients:
-                    for ing in new_ingredients:
-                        st.session_state.ingredient_weights[ing] = 100.0
-                    st.success(f"Added {len(new_ingredients)} ingredient(s)")
+                
+                if new_ingredient and st.button("Add Ingredient"):
+                    st.session_state.ingredient_weights[new_ingredient] = 100.0
+                    st.success(f"Added {new_ingredient}")
                     st.rerun()
         
         # Individual portion input
@@ -403,15 +402,11 @@ with tab1:
             
             # Common portion presets
             portion_presets = {
-                "A Thumb (14g)": 14,
-                "Fist size (100g)": 100,
-                "Palm size (120g)": 120,
-                "Small bowl (150g)": 150,
-                "Small plate (200g)": 200,
-                "Medium bowl (250g)": 250,                
-                "Medium plate (350g)": 350,
-                "Large bowl (400g)": 400,
-                "Large plate (500g)": 500
+                "Tiny (10g)": 10,
+                "Small (50g)": 50,
+                "Medium (100g)": 100,
+                "Large (200g)": 200,
+                "Extra Large (300g)": 300,
             }
             
             for ing in sorted(st.session_state.ingredient_weights.keys()):
