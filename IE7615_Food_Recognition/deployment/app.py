@@ -14,6 +14,8 @@ from torchvision import transforms
 from pathlib import Path
 import json
 import gdown
+import os
+st.write(f"Current Working Directory: {os.getcwd()}")
 
 # ============================================================
 # Page Config
