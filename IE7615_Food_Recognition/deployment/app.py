@@ -58,22 +58,22 @@ def download_model_if_needed():
 @st.cache_resource
 def load_system():
     """Load model and data"""
-    import os
     from pathlib import Path
     
     # Get script directory
     if '__file__' in globals():
         script_dir = Path(__file__).parent.absolute()
-        os.chdir(script_dir)
+    else:
+        script_dir = Path.cwd()
     
-    st.write(f"Working directory: {os.getcwd()}")  #
-    st.write(f"Files in directory: {os.listdir('.')}")  #
-        
+    # Full paths
+    vocab_path = script_dir / "ingredient_vocab.json"
+    nutrition_path = script_dir / "ingredients.xlsx"
+    cooccur_path = script_dir / "cooccurrence_prob.npy"
+    
+
     model_path = download_model_if_needed()
-    
-    vocab_path = "ingredient_vocab.json"
-    nutrition_path = "ingredients.xlsx"
-    cooccur_path = "cooccurrence_prob.npy"
+    model_path = script_dir / model_path  # Make it absolute
     
     with open(vocab_path, 'r') as f:
         vocab = json.load(f)['vocab']
