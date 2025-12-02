@@ -58,7 +58,17 @@ def download_model_if_needed():
 @st.cache_resource
 def load_system():
     """Load model and data"""
+    import os
+    from pathlib import Path
     
+    # Get script directory
+    if '__file__' in globals():
+        script_dir = Path(__file__).parent.absolute()
+        os.chdir(script_dir)
+    
+    st.write(f"Working directory: {os.getcwd()}")  #
+    st.write(f"Files in directory: {os.listdir('.')}")  #
+        
     model_path = download_model_if_needed()
     
     vocab_path = "ingredient_vocab.json"
