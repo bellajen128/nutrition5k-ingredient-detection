@@ -115,21 +115,30 @@ st.success(f'System ready! (Device: {device})')
 # Functions
 # ============================================================
 
-def predict_with_uncertainty(model, img_tensor, device, n=20):
+def predict_with_uncertainty(model, img_tensor, device, n=10):
     """MC Dropout uncertainty estimation"""
-    for m in model.classifier.modules():
-        if isinstance(m, nn.Dropout):
-            m.train()
+    # Set model to eval first
+    model.eval()
+    
+    # Only enable dropout layers
+    dropout_layers = [m for m in model.classifier.modules() if isinstance(m, nn.Dropout)]
+    for m in dropout_layers:
+        m.train()
     
     preds = []
-    with torch.no_grad():
-        for _ in range(n):
+    for _ in range(n):
+        with torch.no_grad():
             out = model(img_tensor)
             preds.append(torch.sigmoid(out).cpu().numpy())
     
+    # Return everything to eval
     model.eval()
+    
     preds = np.array(preds)
-    return preds.mean(axis=0)[0], preds.std(axis=0)[0]
+    mean = preds.mean(axis=0)[0]
+    std = preds.std(axis=0)[0]
+    
+    return mean, std
 
 def get_nutrition(ing, df):
     """Get ingredient nutrition per gram"""
@@ -219,9 +228,9 @@ use_uncertainty = st.sidebar.checkbox(
 )
 
 use_cooccur = st.sidebar.checkbox(
-    "Use Co-occurrence Boosting",
+    "Co-occurrence Boosting (Experimental)",
     value=False,
-    help="Boost related ingredients"
+    help="Increases recall but may reduce precision. Default: OFF"
 )
 
 st.sidebar.markdown("---")
@@ -236,7 +245,7 @@ st.sidebar.info("""
 **Features**:
 - Threshold Optimization
 - MC Dropout Uncertainty
-- Co-occurrence Learning
+- Co-occurrence (Experimental)
 - Nutritional Reasoning
 """)
 
@@ -273,7 +282,7 @@ with tab1:
                 
                 # Predict
                 if use_uncertainty:
-                    mean_probs, std_probs = predict_with_uncertainty(model, img_tensor, device, 20)
+                    mean_probs, std_probs = predict_with_uncertainty(model, img_tensor, device, 10)
                 else:
                     with torch.no_grad():
                         out = model(img_tensor)
@@ -403,16 +412,38 @@ with tab1:
             
             # Common portion presets
             portion_presets = {
-                "A Thumb (14g)": 14,
-                "Fist size (100g)": 100,
-                "Palm size (120g)": 120,
-                "Small bowl (150g)": 150,
-                "Small plate (200g)": 200,
-                "Medium bowl (250g)": 250,                
-                "Medium plate (350g)": 350,
-                "Large bowl (400g)": 400,
-                "Large plate (500g)": 500
+            "Tiny (10g)": 10,                    # 0 - 調味料
+            "Thumb size (30g)": 30,              # 1 - 堅果
+            "Fist size (100g)": 100,             # 2 - 預設/蔬菜
+            "Palm size (120g)": 120,             # 3 - 肉類
+            "Small bowl (150g)": 150,            # 4
+            "Small plate (200g)": 200,           # 5
+            "Medium bowl (250g)": 250,           # 6 - 主食
+            "Medium plate (350g)": 350,          # 7
+            "Large bowl (400g)": 400,            # 8
+            "Large plate (500g)": 500            # 9
             }
+
+            def get_default_preset(ing_name):
+                """Get smart default based on ingredient type"""
+                ing_lower = ing_name.lower()
+                
+                # 堅果類 - Thumb size
+                if any(nut in ing_lower for nut in ['almond', 'walnut', 'cashew', 'peanut', 'pecan']):
+                    return 1
+                
+                # 主食類 - Medium bowl
+                if any(grain in ing_lower for grain in ['rice', 'pasta', 'noodle', 'bread', 'quinoa']):
+                    return 6
+                
+                # 調味料 - Tiny
+                if any(cond in ing_lower for cond in ['salt', 'pepper', 'oil', 'sauce', 'vinegar']):
+                    return 0
+                
+                # 預設 - Fist size
+                return 2    
+            
+            
             
             for ing in sorted(st.session_state.ingredient_weights.keys()):
                 cols = st.columns([3, 2, 2])
@@ -426,7 +457,8 @@ with tab1:
                         list(portion_presets.keys()),
                         key=f"preset_{ing}",
                         label_visibility="collapsed",
-                        index=2  # Default to Medium (100g)
+                        index=get_default_preset(ing)
+
                     )
                     preset_weight = portion_presets[preset]
                 
@@ -543,9 +575,10 @@ with tab2:
     - 20 forward passes per prediction
     - Quantifies prediction confidence
     
-    **4. Co-occurrence Learning**
+    **4. Co-occurrence Learning (Experimental)**
     - Learns from 2,792 training dishes
-    - Improves prediction logic
+    - Tested but decreased F1 by 7.6% due to false positives
+    - Kept as optional feature (default: OFF)
     
     **5. Manual Editing**
     - Remove incorrect predictions
