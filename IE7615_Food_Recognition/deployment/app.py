@@ -58,22 +58,14 @@ def download_model_if_needed():
 @st.cache_resource
 def load_system():
     """Load model and data"""
-    from pathlib import Path
     
-    # Get script directory
-    if '__file__' in globals():
-        script_dir = Path(__file__).parent.absolute()
-    else:
-        script_dir = Path.cwd()
+    # Use relative paths (Streamlit Cloud handles this)
+    vocab_path = "ingredient_vocab.json"
+    nutrition_path = "ingredients.xlsx"
+    cooccur_path = "cooccurrence_prob.npy"
     
-    # Full paths
-    vocab_path = script_dir / "ingredient_vocab.json"
-    nutrition_path = script_dir / "ingredients.xlsx"
-    cooccur_path = script_dir / "cooccurrence_prob.npy"
-    
-
+    # Download model (will be in same directory)
     model_path = download_model_if_needed()
-    model_path = script_dir / model_path  # Make it absolute
     
     with open(vocab_path, 'r') as f:
         vocab = json.load(f)['vocab']
