@@ -58,11 +58,13 @@ def download_model_if_needed():
 @st.cache_resource
 def load_system():
     """Load model and data"""
-    
-    # Use relative paths (Streamlit Cloud handles this)
-    vocab_path = "ingredient_vocab.json"
-    nutrition_path = "ingredients.xlsx"
-    cooccur_path = "cooccurrence_prob.npy"
+    # *** 修正後的路徑 ***
+    # 使用完整的相對路徑，從專案根目錄開始計算
+    folder = "IE7615_Food_Recognition/deployment/"
+
+    vocab_path = folder + "ingredient_vocab.json"
+    nutrition_path = folder + "ingredients.xlsx"
+    cooccur_path = folder + "cooccurrence_prob.npy"
     
     # Download model (will be in same directory)
     model_path = download_model_if_needed()
