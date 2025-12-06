@@ -239,9 +239,9 @@ st.sidebar.markdown("---")
 st.sidebar.markdown("### Model Info")
 st.sidebar.info("""
 **Model**: EfficientNet-B3 + MFB  
-**F1 Score**: 0.793  
-**Precision**: 0.778  
-**Recall**: 0.839  
+**F1 Score**: 0.814 
+**Precision**: 0.803  
+**Recall**: 0.858  
 **Optimal Threshold**: 0.20
 
 **Features**:
@@ -567,11 +567,11 @@ with tab2:
     **1. AI Ingredient Detection**
     - EfficientNet-B3 with MFB Class Weighting
     - 249 ingredient classes
-    - F1 Score: 0.793
+    - F1 Score: 0.814
     
     **2. Threshold Optimization**
     - Data-driven threshold: 0.20
-    - Balances precision (0.778) and recall (0.839)
+    - Balances precision (0.803) and recall (0.858)
     
     **3. MC Dropout Uncertainty**
     - 20 forward passes per prediction
@@ -596,9 +596,9 @@ with tab2:
     
     | Metric | Value |
     |--------|-------|
-    | F1 Score | 0.793 |
-    | Precision | 0.778 |
-    | Recall | 0.839 |
+    | F1 Score | 0.814 |
+    | Precision | 0.803 |
+    | Recall | 0.858 |
     | Exact Match | 0.364 |
     | Hamming Accuracy | 0.988 |
     
