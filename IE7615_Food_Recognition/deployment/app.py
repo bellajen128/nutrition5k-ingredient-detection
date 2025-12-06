@@ -241,9 +241,9 @@ st.sidebar.markdown("---")
 st.sidebar.markdown("### Model Info")
 st.sidebar.info("""
 **Model**: EfficientNet-B3 + MFB  
-**F1 Score**: 0.814
-**Precision**: 0.803
-**Recall**: 0.858 
+**F1 Score**: 0.814  
+**Precision**: 0.803  
+**Recall**: 0.858   
 **Optimal Threshold**: 0.20
 
 **Features**:
