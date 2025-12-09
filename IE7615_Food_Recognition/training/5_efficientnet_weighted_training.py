@@ -103,7 +103,7 @@ if torch.cuda.is_available():
     torch.backends.cudnn.enabled = True
     print("✓ cuDNN optimizations enabled")
 else:
-    print("⚠️  WARNING: CUDA not available!")
+    print("   WARNING: CUDA not available!")
     print("   This script should be run on GPU node via SLURM")
     print("   Continuing anyway for testing purposes...")
 
@@ -977,7 +977,7 @@ print(f"    ├─ visualizations/training_curves.png")
 print(f"    └─ training_summary.json")
 
 print("\n" + "="*80)
-print("WEEK 7 TRAINING COMPLETE! 🎉")
+print("TRAINING COMPLETE!")
 print("="*80)
 print("\nNext steps:")
 print("  1. Review training_curves.png for convergence")
