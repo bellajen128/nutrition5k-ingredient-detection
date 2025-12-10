@@ -13,7 +13,7 @@ An automated food ingredient detection system using deep learning to enable smar
 ### Key Features
 - Multi-ingredient detection from a single food image
 - 249 ingredient categories
-- 75.73% F1-Score on test set
+- 81.4% F1-Score on test set
 - Fast inference (~50ms per image)
 
 ---
@@ -234,7 +234,7 @@ Output: 249 probabilities [0, 1]
 ### Key Insights
 
 Strengths:
-- High precision (83.92%) - Low false positive rate
+- High precision (80.3%) - Low false positive rate
 - Fast training - Efficient for iteration
 - Good generalization - Test ≈ Validation
 
