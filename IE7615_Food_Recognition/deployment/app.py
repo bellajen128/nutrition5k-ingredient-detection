@@ -35,11 +35,14 @@ st.markdown("### Analyze ingredients and nutrition from food images")
 @st.cache_resource
 def download_model_if_needed():
     """Download model from Google Drive if not exists"""
-    model_path = "efficientnet_best.pth"
+    # model_path = "efficientnet_best.pth"
+    model_path = "efficientnet_best_with_augmentation.pth"
     
     if not Path(model_path).exists():
         with st.spinner('Downloading model from Google Drive (134MB, first time only)...'):
-            file_id = "1iTgcoJ4DJVWDorzFWTzG_YjHaCbfR2kq"
+            # file_id = "1iTgcoJ4DJVWDorzFWTzG_YjHaCbfR2kq"
+            # url = f"https://drive.google.com/uc?id={file_id}"
+            file_id = "1Cj_3eQVMOhfn0BtFgbzE-C4FW-sKjXDA" 
             url = f"https://drive.google.com/uc?id={file_id}"
             
             try:
