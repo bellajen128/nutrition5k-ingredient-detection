@@ -5,8 +5,8 @@ Dataset: Nutrition5K
 Environment: Discovery HPC with V100 GPU
 Time limit: 1 hour (55 min training + 5 min buffer)
 
-Author: Chen Jen 
-Date: 2025-11-06
+Author: Qingyi Ji 
+Date: 2025-12-10
 """
 
 import os
@@ -28,7 +28,7 @@ print("="*80)
 print(f"Start time: {time.strftime('%Y-%m-%d %H:%M:%S')}\n")
 
 # Virtual environment setup
-VENV_DIR = "/home/jen.che/nutrition5k_env"
+VENV_DIR = "/home/ji.qin/nutrition5k_env"
 SITE_PACKAGES = f"{VENV_DIR}/lib/python3.12/site-packages"
 if SITE_PACKAGES not in sys.path:
     sys.path.insert(0, SITE_PACKAGES)
@@ -103,7 +103,7 @@ if torch.cuda.is_available():
     torch.backends.cudnn.enabled = True
     print("✓ cuDNN optimizations enabled")
 else:
-    print("   WARNING: CUDA not available!")
+    print("⚠️  WARNING: CUDA not available!")
     print("   This script should be run on GPU node via SLURM")
     print("   Continuing anyway for testing purposes...")
 
@@ -115,7 +115,7 @@ print("\n" + "="*80)
 print("Directory Setup")
 print("="*80)
 
-BASE_DIR = Path("/scratch/jen.che/nutrition5k_prepared")
+BASE_DIR = Path("/scratch/ji.qin/nutrition5k_prepared")
 IMG_DIR = BASE_DIR / "images"
 
 # Output directories
@@ -293,7 +293,7 @@ class Nutrition5KDataset(Dataset):
         return image, torch.tensor(labels, dtype=torch.float32)
 
 # =============================================================================
-# Step 6: Data Augmentation & Transforms
+# Step 6: Data Transforms (NO AUGMENTATION)
 # =============================================================================
 
 print("\n" + "="*80)
@@ -350,6 +350,7 @@ print(f"  Sample image shape: {sample_img.shape}")
 print(f"  Sample labels shape: {sample_labels.shape}")
 print(f"  Num ingredients in sample: {int(sample_labels.sum())}")
 
+
 # =============================================================================
 # Step 7: Model Architecture
 # =============================================================================
@@ -360,10 +361,10 @@ print("="*80)
 
 class EfficientNetMultiLabel(nn.Module):
     """
-    EfficientNet-B0 backbone + Multi-label classification head
+    EfficientNet-B3 backbone + Multi-label classification head
     
     Architecture:
-    - EfficientNet-B0 backbone (pretrained on ImageNet)
+    - EfficientNet-B3 backbone (pretrained on ImageNet)
     - Global Average Pooling
     - Fully connected layers with dropout
     - Final sigmoid activation for multi-label output
@@ -408,7 +409,7 @@ class EfficientNetMultiLabel(nn.Module):
         return logits
 
 # Initialize model
-print("Initializing EfficientNet-B0...")
+print("Initializing EfficientNet-B3...")
 model = EfficientNetMultiLabel(
     num_classes=num_classes,
     pretrained=True,
@@ -420,7 +421,7 @@ model = model.to(device)
 total_params = sum(p.numel() for p in model.parameters())
 trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
 
-print(f"\n✓ Model: EfficientNet-B0 Multi-Label Classifier")
+print(f"\n✓ Model: EfficientNet-B3 Multi-Label Classifier")
 print(f"  Total parameters: {total_params:,}")
 print(f"  Trainable parameters: {trainable_params:,}")
 print(f"  Model size: ~{total_params * 4 / 1e6:.1f} MB (float32)")
@@ -435,7 +436,7 @@ print("="*80)
 
 # Hyperparameters (optimized for V100 + 1 hour session)
 BATCH_SIZE = 32           # V100 can handle this
-NUM_EPOCHS = 0          # Should complete in ~40-45 minutes
+NUM_EPOCHS = 40          # Should complete in ~40-45 minutes
 LEARNING_RATE = 1e-3     # Higher LR for faster convergence
 WEIGHT_DECAY = 1e-5
 NUM_WORKERS = 8          # HPC has many cores
@@ -779,7 +780,7 @@ print("="*80)
 
 if best_model_path.exists():
     # Load best model
-    checkpoint = torch.load(best_model_path)
+    checkpoint = torch.load(best_model_path,  weights_only=False)
     model.load_state_dict(checkpoint['model_state_dict'])
     print(f"✓ Loaded best model from epoch {checkpoint['epoch']+1}")
     print(f"  Best val F1: {checkpoint['metrics']['f1']:.4f}")
@@ -932,7 +933,7 @@ if len(history['train_loss']) > 1:
     ax6.grid(True, alpha=0.3)
     ax6.set_yscale('log')
     
-    plt.suptitle('EfficientNet-B0 Training Progress - Nutrition5K Ingredient Detection',
+    plt.suptitle('EfficientNet-B3 Training Progress - Nutrition5K Ingredient Detection',
                  fontsize=15, fontweight='bold', y=0.98)
     
     plt.savefig(VIS_DIR / 'training_curves.png', dpi=150, bbox_inches='tight')
@@ -977,7 +978,7 @@ print(f"    ├─ visualizations/training_curves.png")
 print(f"    └─ training_summary.json")
 
 print("\n" + "="*80)
-print("TRAINING COMPLETE!")
+print("WEEK 7 TRAINING COMPLETE! 🎉")
 print("="*80)
 print("\nNext steps:")
 print("  1. Review training_curves.png for convergence")
