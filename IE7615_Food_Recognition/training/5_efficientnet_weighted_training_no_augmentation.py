@@ -967,7 +967,7 @@ print(f"    ├─ visualizations/training_curves.png")
 print(f"    └─ training_summary.json")
 
 print("\n" + "="*80)
-print("WEEK 7 TRAINING COMPLETE! 🎉")
+print("TRAINING COMPLETE!")
 print("="*80)
 print("\nNext steps:")
 print("  1. Review training_curves.png for convergence")
