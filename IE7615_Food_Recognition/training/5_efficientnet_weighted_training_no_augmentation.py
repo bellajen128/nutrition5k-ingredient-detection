@@ -6,7 +6,7 @@ Environment: Discovery HPC with V100 GPU
 Time limit: 1 hour (55 min training + 5 min buffer)
 
 Author: Qingyi Ji 
-Date: 2025-11-06
+Date: 2025-12-10
 """
 
 import os
