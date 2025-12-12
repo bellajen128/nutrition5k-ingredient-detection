@@ -293,26 +293,18 @@ class Nutrition5KDataset(Dataset):
         return image, torch.tensor(labels, dtype=torch.float32)
 
 # =============================================================================
-# Step 6: Data Augmentation & Transforms
+# Step 6: Data Transforms (NO AUGMENTATION)
 # =============================================================================
 
 print("\n" + "="*80)
-print("Data Augmentation Setup")
+print("Data Transform Setup (No Augmentation)")
 print("="*80)
 
-IMG_SIZE = 512  # Optimal for V100 GPU
+IMG_SIZE = 512  # Same as before
 
-# Training transforms with augmentation
+# Training transforms (NO augmentation)
 train_transform = transforms.Compose([
     transforms.Resize((IMG_SIZE, IMG_SIZE)),
-    transforms.RandomHorizontalFlip(p=0.5),
-    transforms.RandomRotation(degrees=10),
-    transforms.ColorJitter(
-        brightness=0.2,
-        contrast=0.2,
-        saturation=0.2,
-        hue=0.1
-    ),
     transforms.ToTensor(),
     transforms.Normalize(
         mean=[0.485, 0.456, 0.406],
@@ -320,7 +312,7 @@ train_transform = transforms.Compose([
     )
 ])
 
-# Validation/Test transforms (no augmentation)
+# Validation/Test transforms (same as train)
 val_transform = transforms.Compose([
     transforms.Resize((IMG_SIZE, IMG_SIZE)),
     transforms.ToTensor(),
@@ -331,10 +323,7 @@ val_transform = transforms.Compose([
 ])
 
 print(f"✓ Image size: {IMG_SIZE}×{IMG_SIZE}")
-print(f"✓ Train augmentation:")
-print(f"    - Horizontal flip (p=0.5)")
-print(f"    - Random rotation (±10°)")
-print(f"    - Color jitter (brightness/contrast/saturation)")
+print("✓ No augmentation applied to training data")
 
 # Create datasets
 print("\nCreating datasets...")
@@ -343,7 +332,7 @@ val_dataset = Nutrition5KDataset(val_df, val_transform, IMG_SIZE)
 test_dataset = Nutrition5KDataset(test_df, val_transform, IMG_SIZE)
 print("✓ Datasets created")
 
-# Test dataset
+# Test dataset sample output
 print("\nTesting dataset...")
 sample_img, sample_labels = train_dataset[0]
 print(f"  Sample image shape: {sample_img.shape}")
@@ -361,10 +350,10 @@ print("="*80)
 
 class EfficientNetMultiLabel(nn.Module):
     """
-    EfficientNet-B3 backbone + Multi-label classification head
+    EfficientNet-B0 backbone + Multi-label classification head
     
     Architecture:
-    - EfficientNet-B3 backbone (pretrained on ImageNet)
+    - EfficientNet-B0 backbone (pretrained on ImageNet)
     - Global Average Pooling
     - Fully connected layers with dropout
     - Final sigmoid activation for multi-label output
@@ -409,7 +398,7 @@ class EfficientNetMultiLabel(nn.Module):
         return logits
 
 # Initialize model
-print("Initializing EfficientNet-B3...")
+print("Initializing EfficientNet-B0...")
 model = EfficientNetMultiLabel(
     num_classes=num_classes,
     pretrained=True,
@@ -421,7 +410,7 @@ model = model.to(device)
 total_params = sum(p.numel() for p in model.parameters())
 trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
 
-print(f"\n✓ Model: EfficientNet-B3 Multi-Label Classifier")
+print(f"\n✓ Model: EfficientNet-B0 Multi-Label Classifier")
 print(f"  Total parameters: {total_params:,}")
 print(f"  Trainable parameters: {trainable_params:,}")
 print(f"  Model size: ~{total_params * 4 / 1e6:.1f} MB (float32)")
@@ -933,7 +922,7 @@ if len(history['train_loss']) > 1:
     ax6.grid(True, alpha=0.3)
     ax6.set_yscale('log')
     
-    plt.suptitle('EfficientNet-B3 Training Progress - Nutrition5K Ingredient Detection',
+    plt.suptitle('EfficientNet-B0 Training Progress - Nutrition5K Ingredient Detection',
                  fontsize=15, fontweight='bold', y=0.98)
     
     plt.savefig(VIS_DIR / 'training_curves.png', dpi=150, bbox_inches='tight')

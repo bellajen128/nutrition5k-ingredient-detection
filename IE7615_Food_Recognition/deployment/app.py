@@ -35,11 +35,14 @@ st.markdown("### Analyze ingredients and nutrition from food images")
 @st.cache_resource
 def download_model_if_needed():
     """Download model from Google Drive if not exists"""
-    model_path = "efficientnet_best.pth"
+    # model_path = "efficientnet_best.pth"
+    model_path = "efficientnet_best_with_augmentation.pth"
     
     if not Path(model_path).exists():
         with st.spinner('Downloading model from Google Drive (134MB, first time only)...'):
-            file_id = "1iTgcoJ4DJVWDorzFWTzG_YjHaCbfR2kq"
+            # file_id = "1iTgcoJ4DJVWDorzFWTzG_YjHaCbfR2kq"
+            # url = f"https://drive.google.com/uc?id={file_id}"
+            file_id = "1Cj_3eQVMOhfn0BtFgbzE-C4FW-sKjXDA" 
             url = f"https://drive.google.com/uc?id={file_id}"
             
             try:
@@ -241,9 +244,9 @@ st.sidebar.markdown("---")
 st.sidebar.markdown("### Model Info")
 st.sidebar.info("""
 **Model**: EfficientNet-B3 + MFB  
-**F1 Score**: 0.814  
-**Precision**: 0.803  
-**Recall**: 0.858   
+**F1 Score**: 0.8640  
+**Precision**: 0.8694  
+**Recall**: 0.9786   
 **Optimal Threshold**: 0.20
 
 **Features**:
@@ -416,13 +419,13 @@ with tab1:
             
             # Common portion presets
             portion_presets = {
-            "Tiny (10g)": 10,                    # 0 - 調味料
-            "Thumb size (30g)": 30,              # 1 - 堅果
-            "Fist size (100g)": 100,             # 2 - 預設/蔬菜
-            "Palm size (120g)": 120,             # 3 - 肉類
+            "Tiny (10g)": 10,                    # 0 - seasoning
+            "Thumb size (30g)": 30,              # 1 - nut
+            "Fist size (100g)": 100,             # 2 - default/veggie
+            "Palm size (120g)": 120,             # 3 - meat
             "Small bowl (150g)": 150,            # 4
             "Small plate (200g)": 200,           # 5
-            "Medium bowl (250g)": 250,           # 6 - 主食
+            "Medium bowl (250g)": 250,           # 6 - carb
             "Medium plate (350g)": 350,          # 7
             "Large bowl (400g)": 400,            # 8
             "Large plate (500g)": 500            # 9
@@ -569,11 +572,11 @@ with tab2:
     **1. AI Ingredient Detection**
     - EfficientNet-B3 with MFB Class Weighting
     - 249 ingredient classes
-    - F1 Score: 0.814
+    - F1 Score: 0.864
     
     **2. Threshold Optimization**
     - Data-driven threshold: 0.20
-    - Balances precision (0.803) and recall (0.858)
+    - Balances precision (0.8694) and recall (0.9786)
     
     **3. MC Dropout Uncertainty**
     - 20 forward passes per prediction
@@ -598,11 +601,9 @@ with tab2:
     
     | Metric | Value |
     |--------|-------|
-    | F1 Score | 0.814 |
-    | Precision | 0.803 |
-    | Recall | 0.858 |
-    | Exact Match | 0.364 |
-    | Hamming Accuracy | 0.988 |
+    | F1 Score | 0.8640 |
+    | Precision | 0.8694 |
+    | Recall | 0.9786 |
     
     ### Dataset
     
